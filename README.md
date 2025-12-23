@@ -39,7 +39,7 @@ This will:
 
 The API will be available at `http://localhost:3000` and Swagger docs at `http://localhost:3000/api-docs`.
 
-## Installation
+## Installation (Without Docker)
 
 ```bash
 npm install
