@@ -9,9 +9,9 @@ Swagger is available at `/api-docs`, and a Postman collection is included under 
 
 ## Prerequisites
 
-- Node.js 20+
-- Docker + Docker Compose (for containerized setup)
-- PostgreSQL 15+ (if running locally without Docker)
+- Docker + Docker Compose (for containerized setup) – recommended
+- Node.js 20+ (only if running locally without Docker)
+- PostgreSQL 15+ (only for local, non‑Docker DB) 
 
 ## Environment
 
