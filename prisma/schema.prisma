@@ -1,0 +1,65 @@
+// Prisma schema for user and task management
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  admin
+  user
+}
+
+enum UserStatus {
+  active
+  inactive
+}
+
+enum TaskStatus {
+  pending
+  in_progress
+  completed
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  name       String
+  email      String     @unique
+  password   String
+  role       UserRole   @default(user)
+  status     UserStatus @default(active)
+  createdAt  DateTime   @default(now()) @map("created_at")
+  deletedAt  DateTime?  @map("deleted_at")
+  tasks      Task[]     @relation("TaskAssignee")
+  created    Task[]     @relation("TaskCreator")
+  comments   TaskComment[]
+}
+
+model Task {
+  id           Int           @id @default(autoincrement())
+  title        String
+  description  String
+  status       TaskStatus    @default(pending)
+  assignedTo   Int           @map("assigned_to")
+  assignee     User          @relation("TaskAssignee", fields: [assignedTo], references: [id])
+  createdBy    Int           @map("created_by")
+  creator      User          @relation("TaskCreator", fields: [createdBy], references: [id])
+  completedAt  DateTime?     @map("completed_at")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  deletedAt    DateTime?     @map("deleted_at")
+  comments     TaskComment[]
+}
+
+model TaskComment {
+  id        Int      @id @default(autoincrement())
+  taskId    Int      @map("task_id")
+  task      Task     @relation(fields: [taskId], references: [id])
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
+  comment   String
+  createdAt DateTime @default(now()) @map("created_at")
+}

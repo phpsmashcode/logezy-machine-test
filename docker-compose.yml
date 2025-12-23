@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: node_task
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:  # ← ADDED
+      test: ["CMD-SHELL", "pg_isready -U postgres -d node_task"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    build: .
+    command: sh -c "npm run prisma:migrate && npm run dev"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/node_task
+      JWT_SECRET: supersecretjwt
+      JWT_EXPIRES_IN: 1h
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy  # ← ADDED
+    volumes:
+      - .:/app
+      - /app/node_modules  # ← ADDED (protects node_modules)
+
+volumes:
+  postgres_data:

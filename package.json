@@ -1,0 +1,36 @@
+{
+  "name": "logezy-machine-test",
+  "version": "1.0.0",
+  "description": "REST API built with Express, Prisma, JWT authentication, and Postgres.",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"No automated tests configured\"",
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "prisma:migrate": "npx prisma migrate deploy",
+    "prisma:generate": "npx prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
+    "pg": "^8.16.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@prisma/config": "^7.2.0",
+    "nodemon": "^3.1.11",
+    "prisma": "^7.2.0"
+  },
+  "type": "module"
+}
