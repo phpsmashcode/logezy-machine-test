@@ -16,6 +16,17 @@ services:
       retries: 10
       start_period: 10s
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
   api:
     build: .
     command: sh -c "npm run prisma:migrate && npm run dev"
@@ -24,14 +35,18 @@ services:
       JWT_SECRET: supersecretjwt
       JWT_EXPIRES_IN: 1h
       PORT: 3000
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     ports:
       - "3000:3000"
     depends_on:
       db:
-        condition: service_healthy  # ← ADDED
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - .:/app
-      - /app/node_modules  # ← ADDED (protects node_modules)
+      - /app/node_modules
 
 volumes:
   postgres_data:
